@@ -1,8 +1,8 @@
 const randToken = require('rand-token');
 const bcrypt = require('bcrypt');
 
-const userModel = require('../users/users.models');
-const authMethod = require('./auth.methods');
+const userModel = require('../models/users');
+const authMethod = require('../utils/auth');
 
 const jwtVariable = require('../../variables/jwt');
 const { SALT_ROUNDS } = require('../../variables/auth');

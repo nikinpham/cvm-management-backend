@@ -11,18 +11,6 @@ dbConnectionInfo = {
 	database: process.env.DB_NAME
 }
 
-// Single Connection
-// var dbconnection = mysql.createConnection(dbConnectionInfo);
-
-// dbconnection.connect(function (err) {
-// 	if (!err) {
-// 		console.log("Database is connected");
-// 	} else {
-// 		console.log("Error connecting database");
-// 	}
-// });
-
-
 // Create mysql connection pool
 var dbconnection = mysql.createPool(
 	dbConnectionInfo

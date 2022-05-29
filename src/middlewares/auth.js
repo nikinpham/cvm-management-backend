@@ -1,8 +1,8 @@
 const jwtVariable = require('../../variables/jwt');
 
-const userModle = require('../users/users.models');
+const userModle = require('../models/users');
 
-const authMethod = require('./auth.methods');
+const authMethod = require('../utils/auth');
 
 exports.isAuth = async (req, res, next) => {
 	// Lấy access token từ header

@@ -1,7 +1,7 @@
-const conn = require('../connection');
+const conn = require('../config/db');
 
 exports.getUser = async username => {
-	let sql = 'SELECT * FROM users WHERE username = ?';
+	let sql = 'SELECT * FROM USERS WHERE username = ?';
 
 	return new Promise((resolve, reject) => {
 		conn.query(sql, [username], (error, users) => {
@@ -14,7 +14,7 @@ exports.getUser = async username => {
 };
 
 exports.createUser = async user => {
-	let sql = 'INSERT INTO users SET ?';
+	let sql = 'INSERT INTO USERS SET ?';
 
 	return new Promise((resolve, reject) => {
 		conn.query(sql, [user], (error, result) => {
@@ -27,7 +27,7 @@ exports.createUser = async user => {
 };
 
 exports.updateRefreshToken = async (username, refreshToken) => {
-	let sql = 'UPDATE users SET refreshToken = ? WHERE username = ?';
+	let sql = 'UPDATE USERS SET refreshToken = ? WHERE username = ?';
 
 	console.log(username, refreshToken)
 	return new Promise((resolve, reject) => {
