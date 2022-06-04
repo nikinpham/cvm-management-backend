@@ -6,25 +6,28 @@ const authMethod = require('../utils/auth');
 
 const jwtVariable = require('../../variables/jwt');
 const { SALT_ROUNDS } = require('../../variables/auth');
-
+const { isEmpty } = require('lodash');
 exports.register = async (req, res) => {
-	const username = req.body.username.toLowerCase();
+	var { body } = req
+	const username = body.username.toLowerCase();
+
 	const user = await userModel.getUser(username);
-	if (user.length) res.status(409).send({ msg: 'Tên tài khoản đã tồn tại.' });
+
+	if (user.length) return res.status(409).send({ msg: 'The Username already exists' });
 	else {
-		const hashPassword = bcrypt.hashSync(req.body.password, SALT_ROUNDS);
+		const hashPassword = bcrypt.hashSync(body.password, SALT_ROUNDS);
 		const newUser = {
 			username: username,
 			password: hashPassword,
 		};
 		const createUser = await userModel.createUser(newUser);
 		if (!createUser) {
-			return res
-				.status(400)
-				.send({ msg: 'Có lỗi trong quá trình tạo tài khoản, vui lòng thử lại.' });
+			return res.status(400).send({
+				msg: 'Có lỗi trong quá trình tạo tài khoản, vui lòng thử lại.',
+			});
 		}
 		return res.send({
-			msg: "Đăng ký tài khoản (" + username + ") thành công!",
+			msg: "Successful account registration",
 		});
 	}
 };
@@ -62,12 +65,11 @@ exports.login = async (req, res) => {
 			.send({ msg: 'Đăng nhập không thành công, vui lòng thử lại.' });
 	}
 
-	let refreshToken = randToken.generate(jwtVariable.refreshTokenSize); // tạo 1 refresh token ngẫu nhiên
+	// Create Refresh Token
+	let refreshToken = randToken.generate(jwtVariable.refreshTokenSize);
 	if (!user.refreshToken) {
-		// Nếu user này chưa có refresh token thì lưu refresh token đó vào database
 		await userModel.updateRefreshToken(user.username, refreshToken);
 	} else {
-		// Nếu user này đã có refresh token thì lấy refresh token đó từ database
 		refreshToken = user.refreshToken;
 	}
 
@@ -136,3 +138,21 @@ exports.refreshToken = async (req, res) => {
 		accessToken,
 	});
 };
+
+exports.removeUser = async (req, res) => {
+	const { body } = req;
+	const { username } = body;
+	const user = await userModel.getUser(username);
+	if (isEmpty(user)) return res.status(404).send({ msg: 'User khong ton tai' });
+	else {
+		const removeUser = await userModel.removeUser(username);
+		if (!removeUser) {
+			return res.status(400).send({
+				msg: 'Co loi trong qua trinh xoa',
+			});
+		}
+		return res.send({
+			msg: "Xoa thanh cong!",
+		});
+	}
+}

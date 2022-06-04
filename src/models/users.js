@@ -26,16 +26,29 @@ exports.createUser = async user => {
 	});
 };
 
-exports.updateRefreshToken = async (username, refreshToken) => {
-	let sql = 'UPDATE USERS SET refreshToken = ? WHERE username = ?';
-
-	console.log(username, refreshToken)
+exports.removeUser = async (username) => {
+	let sql = `DELETE FROM USERS WHERE username = ?`;
 	return new Promise((resolve, reject) => {
-		conn.query(sql, [refreshToken, username], (error) => {
+		conn.query(sql, [username], (error, result) => {
 			if (error) {
+				console.log(error);
 				return reject(error);
 			}
-			return resolve();
+			return resolve(result);
 		});
 	});
+};
+
+exports.updateRefreshToken = async (username, refreshToken) => {
+	// let sql = 'UPDATE USERS SET refreshToken = ? WHERE username = ?';
+
+	// console.log(username, refreshToken)
+	// return new Promise((resolve, reject) => {
+	// 	conn.query(sql, [refreshToken, username], (error) => {
+	// 		if (error) {
+	// 			return reject(error);
+	// 		}
+	// 		return resolve();
+	// 	});
+	// });
 };

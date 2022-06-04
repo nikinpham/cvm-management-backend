@@ -5,14 +5,17 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
-dotenv.config();
+const multer = require('multer');
+const upload = multer();
 
 const authRouter = require('./src/routes/auth');
 const userRouter = require('./src/routes/users');
 
+dotenv.config();
+
 const app = express();
 
+// environtment default = Dev
 app.use(morgan('dev'));
 
 app.use(
@@ -22,6 +25,18 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+// for parsing application/json
+app.use(express.json());
+
+// for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// for parsing multipart/form-data
+app.use(upload.array());
+app.use(express.static('public'));
+
+// sercurity
 app.use(cors());
 
 app.get('/', (req, res) => {
