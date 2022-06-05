@@ -1,6 +1,6 @@
 {
 	"arrowParens": "avoid",
-	"bracketSpacing": false,
+	"bracketSpacing": true,
 	"insertPragma": false,
 	"printWidth": 80,
 	"proseWrap": "preserve",
@@ -8,6 +8,6 @@
 	"semi": true,
 	"singleQuote": true,
 	"trailingComma": "all",
-	"tabWidth": 3,
+	"tabWidth": 2,
 	"useTabs": true
 }

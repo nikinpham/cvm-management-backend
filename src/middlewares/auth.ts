@@ -1,10 +1,8 @@
-const jwtVariable = require('../../variables/jwt');
+import { JWT_VARIABLE } from '../../variables';
+import { UserModel } from '../models';
+import { AuthUtils } from '../utils';
 
-const userModle = require('../models/users');
-
-const authMethod = require('../utils/auth');
-
-exports.isAuth = async (req, res, next) => {
+const isAuth = async (req, res, next) => {
 	// Lấy access token từ header
 	const accessTokenFromHeader = req.headers.x_authorization;
 	if (!accessTokenFromHeader) {
@@ -12,9 +10,9 @@ exports.isAuth = async (req, res, next) => {
 	}
 
 	const accessTokenSecret =
-		process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+		process.env.ACCESS_TOKEN_SECRET || JWT_VARIABLE.accessTokenSecret;
 
-	const verified = await authMethod.verifyToken(
+	const verified = await AuthUtils.verifyToken(
 		accessTokenFromHeader,
 		accessTokenSecret,
 	);
@@ -24,8 +22,12 @@ exports.isAuth = async (req, res, next) => {
 			.send('Bạn không có quyền truy cập vào tính năng này!');
 	}
 
-	const user = await userModle.getUser(verified.payload.username);
+	const user = await UserModel.getUser(verified.payload.username);
 	req.user = user;
 
 	return next();
+};
+
+export const AuthMiddlewares = {
+	isAuth,
 };

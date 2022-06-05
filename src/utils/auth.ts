@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken');
-const promisify = require('util').promisify;
+import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
 
 const sign = promisify(jwt.sign).bind(jwt);
 const verify = promisify(jwt.verify).bind(jwt);
 
-exports.generateToken = async (payload, secretSignature, tokenLife) => {
+const generateToken = async (payload, secretSignature, tokenLife) => {
 	try {
 		return await sign(
 			{
@@ -22,7 +22,7 @@ exports.generateToken = async (payload, secretSignature, tokenLife) => {
 	}
 };
 
-exports.verifyToken = async (token, secretKey) => {
+const verifyToken = async (token, secretKey) => {
 	try {
 		return await verify(token, secretKey);
 	} catch (error) {
@@ -31,7 +31,7 @@ exports.verifyToken = async (token, secretKey) => {
 	}
 };
 
-exports.decodeToken = async (token, secretKey) => {
+const decodeToken = async (token, secretKey) => {
 	try {
 		return await verify(token, secretKey, {
 			ignoreExpiration: true,
@@ -40,4 +40,10 @@ exports.decodeToken = async (token, secretKey) => {
 		console.log(`Error in decode access token: ${error}`);
 		return null;
 	}
+};
+
+export const AuthUtils = {
+	decodeToken,
+	verifyToken,
+	generateToken,
 };
