@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "nodemon app.ts"
+    "start": "nodemon app.ts",
+		"lint": "eslint . --ext .ts"
   },
   "author": "",
   "license": "ISC",
