@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "nodemon app.ts",
-		"lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts"
   },
   "author": "",
   "license": "ISC",
