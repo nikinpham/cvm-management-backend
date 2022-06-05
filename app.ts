@@ -4,21 +4,17 @@ import express, { Express, NextFunction, Response } from 'express';
 import 'express-async-errors';
 import createError from 'http-errors';
 import morgan from 'morgan';
-import multer from 'multer';
 import { AuthRouter } from './src/routes';
-
 dotenv.config();
-const upload = multer();
+
 const app: Express = express();
 const PORT = process.env.PORT || 3306;
 
 // environtment default = Dev
 app.use(morgan('dev'));
-
 app.get('/', (res: Response) => {
 	res.send('Server starting!');
 });
-
 // for parsing application/json
 app.use(express.json());
 

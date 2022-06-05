@@ -1,8 +1,9 @@
+import { NextFunction, Response } from 'express';
 import { JWT_VARIABLE } from '../../variables';
 import { UserModel } from '../models';
 import { AuthUtils } from '../utils';
 
-const isAuth = async (req, res, next) => {
+const isAuth = async (req: any, res: Response, next: NextFunction) => {
 	// Lấy access token từ header
 	const accessTokenFromHeader = req.headers.x_authorization;
 	if (!accessTokenFromHeader) {

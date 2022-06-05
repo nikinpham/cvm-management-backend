@@ -1,12 +1,12 @@
-import { Response } from 'express';
 import DBConnection from '../config';
+import { Response } from 'express';
 import { TABLE } from '../constants';
+import { UserType } from '../types';
 
 const getUser = async (username: string) => {
-	let sql = `SELECT * FROM ${TABLE.USERS} WHERE username = ?`;
-
+	const sql = `SELECT * FROM ${TABLE.USERS} WHERE username = ?`;
 	return new Promise((resolve, reject) => {
-		DBConnection.query(sql, [username], (error: any, users: any) => {
+		DBConnection.query(sql, [username], (error: any, users: UserType) => {
 			if (error) {
 				return reject(error);
 			}
@@ -15,9 +15,8 @@ const getUser = async (username: string) => {
 	});
 };
 
-const createUser = async (user: { username: string; password: string }) => {
-	let sql = `INSERT INTO ${TABLE.USERS} SET ?`;
-
+const createUser = async (user: UserType) => {
+	const sql = `INSERT INTO ${TABLE.USERS} SET ?`;
 	return new Promise((resolve, reject) => {
 		DBConnection.query(sql, [user], (error: any, result: Response) => {
 			if (error) {
